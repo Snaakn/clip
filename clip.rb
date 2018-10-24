@@ -36,8 +36,16 @@ class Clipboard
   def reset
     @vault = File.open('vault.yaml', 'w+')
   end
+  def delete key
+    @vault = File.open('vault.yaml', 'w+')
+    puts @list.class
+    @list.delete("#{key}")
+    @vault.write(@list.to_yaml)
+    puts "Deleted"
+  end
 
 end
+
 
 @clip = Clipboard.new()
 @arg_array = ARGV
@@ -63,6 +71,8 @@ end
     @clip.list
   elsif cmd == "reset"
     @clip.reset
+  elsif cmd == "DELETE"
+    @clip.delete(@arg_array[1])
   else
     puts "Use 'sv #name' to save clipboard, cp #name to load to clipboard, list to list all saved keywords"
   end
