@@ -4,23 +4,23 @@ require 'yaml'
 
 class Clipboard
   def initialize
-    if !File.exist?("vault.yaml")
-      @vault = File.new('vault.yaml', 'w')
+    if !File.exist?("clipboard.yml")
+      @clipboard = File.new('clipboard.yml', 'w')
     end
-    @vault = File.open('vault.yaml', 'r+')
-    @list = YAML.load(@vault.read)
+    @clipboard = File.open('clipboard.yml', 'r+')
+    @list = yml.load(@clipboard.read)
     if !@list
       @list = Hash.new
     end
   end
   def save key
-    @vault = File.open('vault.yaml', 'w+')
+    @clipboard = File.open('clipboard.yml', 'w+')
      str = IO.popen('pbpaste', 'w+').read
      h = Hash.new
      h = {"#{key}" => "#{str}"}
      puts @list.class
      @list.merge!(h)
-     @vault.write(@list.to_yaml)
+     @clipboard.write(@list.to_yml)
     puts "SAVED"
   end
 
@@ -34,13 +34,13 @@ class Clipboard
     puts @list.keys
   end
   def reset
-    @vault = File.open('vault.yaml', 'w+')
+    @clipboard = File.open('clipboard.yml', 'w+')
   end
   def delete key
-    @vault = File.open('vault.yaml', 'w+')
+    @clipboard = File.open('clipboard.yml', 'w+')
     puts @list.class
     @list.delete("#{key}")
-    @vault.write(@list.to_yaml)
+    @clipboard.write(@list.to_yml)
     puts "Deleted"
   end
 
